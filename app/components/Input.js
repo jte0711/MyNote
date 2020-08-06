@@ -7,10 +7,10 @@ export default function Input({ style, ...otherProps }) {
 
 const styles = StyleSheet.create({
   input: {
-    height: 40,
+    height: 45,
     marginTop: 15,
-    fontSize: 16,
-    paddingHorizontal: 15,
+    fontSize: 18,
+    paddingLeft: 20,
     backgroundColor: "#FBFEFE",
     borderStyle: "solid",
     borderColor: "#939F9F",
