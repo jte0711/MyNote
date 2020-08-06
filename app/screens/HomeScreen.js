@@ -5,12 +5,6 @@ import { MaterialIcons } from "@expo/vector-icons";
 import Screen from "../components/Screen";
 import NoteCard from "../components/NoteCard";
 
-// Testing Only
-{
-  /*  content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vitae
-          nunc at velit sodales vehicula sed sed elit."
-          title="Notes Title"*/
-}
 const noteList = [
   {
     id: 1,
