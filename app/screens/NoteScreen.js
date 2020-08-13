@@ -3,7 +3,8 @@ import { StyleSheet, Text } from "react-native";
 import Screen from "../components/Screen";
 import Input from "../components/Input";
 
-const NoteScreen = () => {
+const NoteScreen = ({ route }) => {
+  const details = route ? route.params : null;
   const [titleHeight, setTitleHeight] = useState("auto");
   const [contentHeight, setContentHeight] = useState("auto");
 
@@ -20,6 +21,7 @@ const NoteScreen = () => {
         }}
         placeholder="Type a title here"
         style={[styles.titleInput, { height: titleHeight }]}
+        value={details ? details.title : null}
       />
       <Text style={styles.date}>Last edited 25 November 2019</Text>
       <Input
@@ -31,6 +33,7 @@ const NoteScreen = () => {
         }}
         placeholder="Type something here"
         style={[styles.content, { height: contentHeight }]}
+        value={details ? details.content : null}
       />
     </Screen>
   );
@@ -40,7 +43,6 @@ export default NoteScreen;
 
 const styles = StyleSheet.create({
   content: {
-    backgroundColor: "white",
     borderWidth: 0,
     color: "#122120",
     fontFamily: "Roboto",
@@ -65,7 +67,6 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   titleInput: {
-    backgroundColor: "white",
     borderWidth: 0,
     color: "#072120",
     fontSize: 36,

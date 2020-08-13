@@ -7,7 +7,7 @@ import AppButton from "../components/Button";
 
 import colors from "../config/colors";
 
-const LoginScreen = () => {
+const LoginScreen = ({ navigation }) => {
   return (
     <Screen style={styles.screen}>
       <View>
@@ -21,12 +21,14 @@ const LoginScreen = () => {
             textContentType="emailAddress"
             keyboardType="email-address"
             placeholder="Email"
+            style={{ backgroundColor: colors.white }}
           ></Input>
           <Input
             textContentType="password"
             secureTextEntry={true}
             keyboardType="default"
             placeholder="Password"
+            style={{ backgroundColor: colors.white }}
           ></Input>
           <Text style={styles.forgotPass}>Forgot password</Text>
         </View>
@@ -52,7 +54,14 @@ const LoginScreen = () => {
       <View style={styles.bottomText}>
         <Text>
           Create an account?{" "}
-          <Text style={{ color: colors.primary }}>Sign up</Text>
+          <Text
+            style={{ color: colors.primary }}
+            onPress={() => {
+              navigation.navigate("Register");
+            }}
+          >
+            Sign up
+          </Text>
         </Text>
       </View>
     </Screen>

@@ -1,8 +1,15 @@
 import React from "react";
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import { StyleSheet, TextInput } from "react-native";
+import colors from "../config/colors";
 
-export default function Input({ style, ...otherProps }) {
-  return <TextInput style={[styles.input, style]} {...otherProps} />;
+export default function Input({ style, value = null, ...otherProps }) {
+  return (
+    <TextInput
+      style={[styles.input, style]}
+      {...otherProps}
+      defaultValue={value}
+    />
+  );
 }
 
 const styles = StyleSheet.create({
@@ -11,7 +18,6 @@ const styles = StyleSheet.create({
     marginTop: 15,
     fontSize: 18,
     paddingLeft: 20,
-    backgroundColor: "#FBFEFE",
     borderStyle: "solid",
     borderColor: "#939F9F",
     borderWidth: 2,

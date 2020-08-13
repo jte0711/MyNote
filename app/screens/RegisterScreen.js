@@ -7,7 +7,7 @@ import WelcomeText from "../components/WelcomeText";
 
 import colors from "../config/colors";
 
-export default function RegisterScreen() {
+export default function RegisterScreen({ navigation }) {
   return (
     <Screen style={styles.screen}>
       <View>
@@ -21,23 +21,27 @@ export default function RegisterScreen() {
             textContentType="name"
             keyboardType="default"
             placeholder="Full Name"
+            style={{ backgroundColor: colors.white }}
           ></Input>
           <Input
             textContentType="emailAddress"
             keyboardType="email-address"
             placeholder="Email"
+            style={{ backgroundColor: colors.white }}
           ></Input>
           <Input
             textContentType="password"
             secureTextEntry={true}
             keyboardType="default"
             placeholder="Password"
+            style={{ backgroundColor: colors.white }}
           ></Input>
           <Input
             textContentType="password"
             secureTextEntry={true}
             keyboardType="default"
             placeholder="Re-type Password"
+            style={{ backgroundColor: colors.white }}
           ></Input>
         </View>
         <View style={styles.buttonView}>
@@ -50,7 +54,15 @@ export default function RegisterScreen() {
 
       <View style={styles.bottomText}>
         <Text>
-          I am a member. <Text style={{ color: colors.primary }}>Sign in</Text>
+          I am a member.{" "}
+          <Text
+            style={{ color: colors.primary }}
+            onPress={() => {
+              navigation.navigate("Login");
+            }}
+          >
+            Sign in
+          </Text>
         </Text>
       </View>
     </Screen>

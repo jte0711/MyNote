@@ -59,7 +59,7 @@ const noteList = [
   },
 ];
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
   return (
     <Screen style={styles.screen}>
       <View
@@ -105,6 +105,9 @@ const HomeScreen = () => {
               content={item.content}
               title={item.title}
               labels={item.labels}
+              pressFunction={() => {
+                navigation.navigate("Note", item);
+              }}
             />
           )}
         />

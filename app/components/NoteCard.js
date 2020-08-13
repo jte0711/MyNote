@@ -8,9 +8,9 @@ import {
 } from "react-native";
 import Label from "./Label";
 
-const NoteCard = ({ title, content, labels }) => {
+const NoteCard = ({ title, content, labels, pressFunction }) => {
   return (
-    <TouchableWithoutFeedback>
+    <TouchableWithoutFeedback onPress={pressFunction}>
       <View style={styles.note}>
         <Text style={styles.title} numberOfLines={2}>
           {title}
