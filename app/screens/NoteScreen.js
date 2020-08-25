@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { StyleSheet, Text } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Screen from "../components/Screen";
 import Input from "../components/Input";
 
@@ -10,6 +11,18 @@ const NoteScreen = ({ route }) => {
 
   return (
     <Screen style={styles.screen}>
+      <View style={styles.topBar}>
+        <MaterialCommunityIcons
+          style={styles.icon}
+          name="trash-can"
+          size={30}
+        />
+        <MaterialCommunityIcons
+          style={styles.icon}
+          name="check-circle-outline"
+          size={30}
+        />
+      </View>
       <Input
         maxLength={70}
         multiline={true}
@@ -63,6 +76,9 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     paddingHorizontal: 25,
   },
+  icon: {
+    paddingLeft: 20,
+  },
   screen: {
     padding: 5,
   },
@@ -74,6 +90,14 @@ const styles = StyleSheet.create({
     fontStyle: "normal",
     fontWeight: "bold",
     lineHeight: 42,
+    paddingRight: 15,
+    width: "100%",
+  },
+  topBar: {
+    alignItems: "center",
+    flexDirection: "row",
+    height: 50,
+    justifyContent: "flex-end",
     paddingRight: 15,
     width: "100%",
   },
