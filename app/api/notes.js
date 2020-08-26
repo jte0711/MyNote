@@ -28,11 +28,6 @@ const getData = () => client.get(endpoint);
 //   });
 // };
 
-// export default {
-//   addListing,
-//   getListings,
-// };
-
 export default {
   getData,
 };

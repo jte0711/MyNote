@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Screen from "../components/Screen";
@@ -8,21 +8,46 @@ const NoteScreen = ({ route }) => {
   const details = route ? route.params : null;
   const [titleHeight, setTitleHeight] = useState("auto");
   const [contentHeight, setContentHeight] = useState("auto");
+  const [edit, setEdit] = useState(false);
+  const titleInputRef = useRef();
+  const textInputRef = useRef();
+
+  const saveIconHandler = () => {
+    setEdit(false);
+    titleInputRef.current.blur();
+    textInputRef.current.blur();
+    if (details) {
+      // edit the current note
+      console.log("Edit current note");
+    } else {
+      // add a new note
+      console.log("Add a new note");
+    }
+  };
+  const inputBlurHandler = () => {
+    setEdit(false);
+  };
+  const inputFocusHandler = () => {
+    setEdit(true);
+  };
 
   return (
     <Screen style={styles.screen}>
-      <View style={styles.topBar}>
-        <MaterialCommunityIcons
-          style={styles.icon}
-          name="trash-can"
-          size={30}
-        />
-        <MaterialCommunityIcons
-          style={styles.icon}
-          name="check-circle-outline"
-          size={30}
-        />
-      </View>
+      {edit ? (
+        <View style={styles.topBar}>
+          <MaterialCommunityIcons
+            style={styles.icon}
+            name="trash-can"
+            size={30}
+          />
+          <MaterialCommunityIcons
+            style={styles.icon}
+            name="check-circle-outline"
+            size={30}
+            onPress={saveIconHandler}
+          />
+        </View>
+      ) : null}
       <Input
         maxLength={70}
         multiline={true}
@@ -32,7 +57,9 @@ const NoteScreen = ({ route }) => {
             setTitleHeight(event.nativeEvent.contentSize.height);
           }
         }}
+        onFocus={inputFocusHandler}
         placeholder="Type a title here"
+        theRef={titleInputRef}
         style={[styles.titleInput, { height: titleHeight }]}
         value={details ? details.title : null}
       />
@@ -44,7 +71,9 @@ const NoteScreen = ({ route }) => {
             setContentHeight(event.nativeEvent.contentSize.height);
           }
         }}
+        onFocus={inputFocusHandler}
         placeholder="Type something here"
+        theRef={textInputRef}
         style={[styles.content, { height: contentHeight }]}
         value={details ? details.content : null}
       />

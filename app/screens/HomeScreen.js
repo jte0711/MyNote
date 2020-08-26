@@ -17,60 +17,6 @@ import useApi from "../hooks/useApi";
 import apiClient from "../api/notes";
 import ActivityIndicator from "../components/ActivityIndicator";
 
-// const noteList = [
-//   {
-//     id: 1,
-//     title: "Notes Title",
-//     content:
-//       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vitaenunc at velit sodales vehicula sed sed elit.",
-//     labels: [
-//       { id: 1, text: "Urgent", color: "#F53D3D" },
-//       { id: 2, text: "Productivity", color: "#849EFB" },
-//     ],
-//   },
-//   {
-//     id: 2,
-//     title: "Long Description",
-//     content:
-//       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vitae nunc at velit sodales vehicula sed sed elit. and then add",
-//     labels: [
-//       { id: 1, text: "Urgent", color: "#F53D3D" },
-//       { id: 2, text: "Productivity", color: "#849EFB" },
-//     ],
-//   },
-//   {
-//     id: 3,
-//     title: "Overly Long Notes Title That Took Everything",
-//     content:
-//       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vitae nunc at velit sodales vehicula sed sed elit. ",
-//     labels: [
-//       { id: 1, text: "Urgent", color: "#F53D3D" },
-//       { id: 2, text: "Productivity", color: "#849EFB" },
-//     ],
-//   },
-//   {
-//     id: 4,
-//     title:
-//       "Overly Long Notes Title That Took Everything Wayyyyy too long to read please cut it off mate",
-//     content:
-//       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vitae nunc at velit sodales vehicula sed sed elit. ",
-//     labels: [
-//       { id: 1, text: "Urgent", color: "#F53D3D" },
-//       { id: 2, text: "Productivity", color: "#849EFB" },
-//     ],
-//   },
-//   {
-//     id: 5,
-//     title: "I don't know what to write anymore",
-//     content:
-//       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vitae nunc at velit sodales vehicula sed sed elit. ",
-//     labels: [
-//       { id: 1, text: "Urgent", color: "#F53D3D" },
-//       { id: 2, text: "Productivity", color: "#849EFB" },
-//     ],
-//   },
-// ];
-
 const HomeScreen = ({ navigation }) => {
   const getNotesApi = useApi(apiClient.getData);
   const [search, setSearch] = useState(false);
