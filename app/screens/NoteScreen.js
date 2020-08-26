@@ -35,7 +35,7 @@ const NoteScreen = ({ route }) => {
       // add a new note
       apiClient.addNote(data);
       console.log("Add a new note");
-      console.log(data);
+      // console.log(data);
     }
   };
   const inputBlurHandler = () => {

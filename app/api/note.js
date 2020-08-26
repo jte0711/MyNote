@@ -3,35 +3,43 @@ import client from "./client";
 const endpoint = "/note";
 
 const addNote = (note) => {
-  const data = new FormData();
-  data.append("title", note.title);
-  data.append("content", note.price);
+  const data = {
+    title: note.title,
+    content: note.content,
+    labels: [],
+  };
 
   note.labels.forEach((label, index) =>
-    data.append("labels", {
+    data.labels.append({
       text: label.text,
       color: label.color,
       id: index + 1,
     })
   );
 
+  console.log("This is data ", data);
   return client.post(endpoint, data);
 };
 
 const editNote = (note, id) => {
-  const data = new FormData();
-  data.append("title", note.title);
-  data.append("content", note.price);
+  const data = {
+    title: note.title,
+    content: note.content,
+    labels: [],
+  };
 
   note.labels.forEach((label, index) =>
-    data.append("labels", {
+    data.labels.append({
       text: label.text,
       color: label.color,
       id: index + 1,
     })
   );
-
-  return client.post(endpoint + "/" + toString(id), data);
+  console.log("This is data ", data);
+  console.log("This is id ", id);
+  let url = endpoint + "/" + id.toString();
+  console.log("this is url ", url);
+  return client.put(url, data);
 };
 
 export default {
