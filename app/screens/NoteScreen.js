@@ -3,25 +3,39 @@ import { StyleSheet, Text, View } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Screen from "../components/Screen";
 import Input from "../components/Input";
+import apiClient from "../api/note";
 
 const NoteScreen = ({ route }) => {
   const details = route ? route.params : null;
   const [titleHeight, setTitleHeight] = useState("auto");
   const [contentHeight, setContentHeight] = useState("auto");
   const [edit, setEdit] = useState(false);
+  const [title, setTitle] = useState(details ? details.title : "");
+  const [content, setContent] = useState(details ? details.content : "");
+
   const titleInputRef = useRef();
   const textInputRef = useRef();
 
   const saveIconHandler = () => {
     setEdit(false);
+    let data = {
+      title: title,
+      content: content,
+      labels: [], // try to find a way to give labels
+    };
     titleInputRef.current.blur();
     textInputRef.current.blur();
     if (details) {
       // edit the current note
+      apiClient.editNote(data, details.id);
       console.log("Edit current note");
+      console.log("Data ", data);
+      console.log("id ", details.id);
     } else {
       // add a new note
+      apiClient.addNote(data);
       console.log("Add a new note");
+      console.log(data);
     }
   };
   const inputBlurHandler = () => {
@@ -52,6 +66,9 @@ const NoteScreen = ({ route }) => {
         maxLength={70}
         multiline={true}
         numberOfLines={3}
+        onChangeText={(text) => {
+          setTitle(text);
+        }}
         onContentSizeChange={(event) => {
           if (event && event.nativeEvent && event.nativeEvent.contentSize) {
             setTitleHeight(event.nativeEvent.contentSize.height);
@@ -66,6 +83,9 @@ const NoteScreen = ({ route }) => {
       <Text style={styles.date}>Last edited 25 November 2019</Text>
       <Input
         multiline
+        onChangeText={(text) => {
+          setContent(text);
+        }}
         onContentSizeChange={(event) => {
           if (event && event.nativeEvent && event.nativeEvent.contentSize) {
             setContentHeight(event.nativeEvent.contentSize.height);
