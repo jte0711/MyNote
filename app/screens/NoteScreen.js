@@ -1,11 +1,11 @@
 import React, { useState, useRef } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Alert } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Screen from "../components/Screen";
 import Input from "../components/Input";
 import apiClient from "../api/note";
 
-const NoteScreen = ({ route }) => {
+const NoteScreen = ({ navigation, route }) => {
   const details = route ? route.params : null;
   const [titleHeight, setTitleHeight] = useState("auto");
   const [contentHeight, setContentHeight] = useState("auto");
@@ -16,6 +16,15 @@ const NoteScreen = ({ route }) => {
   const titleInputRef = useRef();
   const textInputRef = useRef();
 
+  const deleteNote = () => {
+    let id = details ? details.id : null;
+    if (id) {
+      apiClient.deleteNote(parseInt(id));
+      navigation.navigate("Home");
+    } else {
+      navigation.goBack();
+    }
+  };
   const saveIconHandler = () => {
     setEdit(false);
     let data = {
@@ -26,17 +35,29 @@ const NoteScreen = ({ route }) => {
     titleInputRef.current.blur();
     textInputRef.current.blur();
     if (details) {
-      // edit the current note
+      // edit current note
       apiClient.editNote(data, details.id);
-      console.log("Edit current note");
-      console.log("Data ", data);
-      console.log("id ", details.id);
     } else {
       // add a new note
       apiClient.addNote(data);
-      console.log("Add a new note");
-      // console.log(data);
     }
+  };
+  const trashIconHandler = () => {
+    setEdit(false);
+
+    // ask confirmation
+    Alert.alert("Are you sure you want to delete this?", null, [
+      {
+        text: "OK",
+        onPress: deleteNote,
+      },
+      {
+        text: "Cancel",
+        onPress: () => {
+          console.log("cancel pressed");
+        },
+      },
+    ]);
   };
   const inputBlurHandler = () => {
     setEdit(false);
@@ -53,6 +74,7 @@ const NoteScreen = ({ route }) => {
             style={styles.icon}
             name="trash-can"
             size={30}
+            onPress={trashIconHandler}
           />
           <MaterialCommunityIcons
             style={styles.icon}

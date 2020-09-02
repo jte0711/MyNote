@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
+  Animated,
   StyleSheet,
   Text,
   View,
@@ -15,19 +16,31 @@ import AddButton from "../components/AddButton";
 import colors from "../config/colors";
 import useApi from "../hooks/useApi";
 import apiClient from "../api/notes";
-import ActivityIndicator from "../components/ActivityIndicator";
 
 const HomeScreen = ({ navigation }) => {
   const getNotesApi = useApi(apiClient.getData);
   const [search, setSearch] = useState(false);
+  const [refresh, setRefresh] = useState(false);
+
+  const refreshHandler = () => {
+    setRefresh(true);
+    console.log("refresh");
+    getNotesApi.request();
+    setRefresh(false);
+  };
 
   useEffect(() => {
-    getNotesApi.request();
-  }, []);
+    refreshHandler();
+    const onFocusRefresh = navigation.addListener("focus", () => {
+      console.log("called");
+      refreshHandler();
+    });
+
+    return onFocusRefresh;
+  }, [navigation]);
 
   return (
     <>
-      <ActivityIndicator visible={getNotesApi.loading} />
       <Screen style={styles.screen}>
         <View
           style={{
@@ -85,11 +98,20 @@ const HomeScreen = ({ navigation }) => {
           <FlatList
             data={getNotesApi.data}
             keyExtractor={(item) => item.id.toString()}
+            onRefresh={refreshHandler}
+            refreshing={refresh}
             renderItem={({ item }) => (
               <NoteCard
                 content={item.content}
                 title={item.title}
                 labels={item.labels}
+                id={item.id}
+                handleRefresh={() => {
+                  setRefresh(true);
+                  console.log("refresh");
+                  getNotesApi.request();
+                  setRefresh(false);
+                }}
                 pressFunction={() => {
                   navigation.navigate("Note", item);
                 }}

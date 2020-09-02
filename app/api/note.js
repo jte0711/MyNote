@@ -17,8 +17,12 @@ const addNote = (note) => {
     })
   );
 
-  console.log("This is data ", data);
+  // console.log("This is data ", data);
   return client.post(endpoint, data);
+};
+
+const deleteNote = (id) => {
+  return client.delete(endpoint + "/" + id.toString());
 };
 
 const editNote = (note, id) => {
@@ -35,14 +39,15 @@ const editNote = (note, id) => {
       id: index + 1,
     })
   );
-  console.log("This is data ", data);
-  console.log("This is id ", id);
+  // console.log("This is data ", data);
+  // console.log("This is id ", id);
   let url = endpoint + "/" + id.toString();
-  console.log("this is url ", url);
+  // console.log("this is url ", url);
   return client.put(url, data);
 };
 
 export default {
   addNote,
+  deleteNote,
   editNote,
 };
