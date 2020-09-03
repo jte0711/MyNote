@@ -1,0 +1,20 @@
+import { useState } from "react";
+
+const useAsyncStore = (asyncFunc) => {
+  const [data, setData] = useState([]);
+  // const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const request = async (...args) => {
+    setLoading(true);
+    const response = await asyncFunc(...args);
+    setLoading(false);
+
+    console.log("useasync response", response);
+    setData(response ? response.data : null);
+  };
+
+  return { data, loading, request };
+};
+
+export default useAsyncStore;
