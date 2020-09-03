@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Animated,
   StyleSheet,
@@ -14,6 +14,7 @@ import Label from "./Label";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import apiClient from "../api/note";
+import asyncNote from "../api/asyncNote";
 
 const AnimatedIcon = Animated.createAnimatedComponent(MaterialCommunityIcons);
 
@@ -25,20 +26,27 @@ const NoteCard = ({
   id,
   handleRefresh,
 }) => {
-  const deleteNote = () => {
-    if (id) {
-      apiClient.deleteNote(parseInt(id));
+  useEffect(() => {
+    console.log("this is card id ", id);
+    console.log("thi sis card content", content);
+  }, []);
+  const deleteNote = async (noteId) => {
+    console.log("this is note id ", noteId);
+    if (noteId) {
+      await asyncNote.deleteNote(parseInt(noteId));
       handleRefresh();
     } else {
       console.log("error triggered");
     }
   };
-  const trashIconHandler = () => {
+  const trashIconHandler = (noteId) => {
     // ask confirmation
     Alert.alert("Are you sure you want to delete this?", null, [
       {
         text: "OK",
-        onPress: deleteNote,
+        onPress: () => {
+          deleteNote(noteId);
+        },
       },
       {
         text: "Cancel",
@@ -54,19 +62,19 @@ const NoteCard = ({
       <View style={styles.card}>
         <Swipeable
           renderRightActions={(progress, dragX) => {
-            const scale = dragX.interpolate({
-              inputRange: [-100, 0],
-              outputRange: [1, 0],
-              extrapolate: "clamp",
-            });
+            // const scale = dragX.interpolate({
+            //   inputRange: [-100, 0],
+            //   outputRange: [1, 0],
+            //   extrapolate: "clamp",
+            // });
             return (
               <View style={styles.rightAction}>
-                <AnimatedIcon
+                <MaterialCommunityIcons
                   color={"#FBFEFE"}
-                  style={[styles.icon, { transform: [{ scale }] }]}
+                  style={[styles.icon]}
                   name="trash-can"
                   size={30}
-                  onPress={trashIconHandler}
+                  onPress={() => trashIconHandler(id)}
                 />
               </View>
             );

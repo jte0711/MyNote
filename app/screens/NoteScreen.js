@@ -4,6 +4,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Screen from "../components/Screen";
 import Input from "../components/Input";
 import apiClient from "../api/note";
+import asyncNote from "../api/asyncNote";
 
 const NoteScreen = ({ navigation, route }) => {
   const details = route ? route.params : null;
@@ -19,7 +20,8 @@ const NoteScreen = ({ navigation, route }) => {
   const deleteNote = () => {
     let id = details ? details.id : null;
     if (id) {
-      apiClient.deleteNote(parseInt(id));
+      console.log("this is the id ", id);
+      asyncNote.deleteNote(parseInt(id));
       navigation.navigate("Home");
     } else {
       navigation.goBack();
@@ -36,10 +38,10 @@ const NoteScreen = ({ navigation, route }) => {
     textInputRef.current.blur();
     if (details) {
       // edit current note
-      apiClient.editNote(data, details.id);
+      asyncNote.editNote(data, details.id);
     } else {
       // add a new note
-      apiClient.addNote(data);
+      asyncNote.addNote(data);
     }
   };
   const trashIconHandler = () => {

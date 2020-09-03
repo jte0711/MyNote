@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import {
-  Animated,
   StyleSheet,
   Text,
   View,
@@ -14,11 +13,14 @@ import Screen from "../components/Screen";
 import NoteCard from "../components/NoteCard";
 import AddButton from "../components/AddButton";
 import colors from "../config/colors";
-import useApi from "../hooks/useApi";
-import apiClient from "../api/notes";
+// import useApi from "../hooks/useApi";
+// import apiClient from "../api/notes";
+import useAsyncStore from "../hooks/useAsync";
+import asyncNotes from "../api/asyncNotes";
+import asyncStorage from "../utility/asyncStorage";
 
 const HomeScreen = ({ navigation }) => {
-  const getNotesApi = useApi(apiClient.getData);
+  const getNotesApi = useAsyncStore(asyncNotes.getAllNotes);
   const [search, setSearch] = useState(false);
   const [refresh, setRefresh] = useState(false);
 
@@ -26,6 +28,7 @@ const HomeScreen = ({ navigation }) => {
     setRefresh(true);
     console.log("refresh");
     getNotesApi.request();
+    console.log("this is the mounting api ", getNotesApi.data);
     setRefresh(false);
   };
 
@@ -71,12 +74,19 @@ const HomeScreen = ({ navigation }) => {
               />
             </TouchableOpacity>
 
-            <MaterialIcons
-              style={styles.icon}
-              name="settings"
-              color="black"
-              size={30}
-            />
+            <TouchableOpacity
+              onPress={() => {
+                asyncStorage.clearData();
+                refreshHandler();
+              }}
+            >
+              <MaterialIcons
+                style={styles.icon}
+                name="settings"
+                color="black"
+                size={30}
+              />
+            </TouchableOpacity>
           </View>
         </View>
         {search ? (
@@ -97,7 +107,10 @@ const HomeScreen = ({ navigation }) => {
         <View style={styles.noteList}>
           <FlatList
             data={getNotesApi.data}
-            keyExtractor={(item) => item.id.toString()}
+            keyExtractor={(item) => {
+              // console.log("this is flatlist item ", item);
+              return item.id;
+            }}
             onRefresh={refreshHandler}
             refreshing={refresh}
             renderItem={({ item }) => (
