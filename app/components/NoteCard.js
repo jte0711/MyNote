@@ -26,12 +26,8 @@ const NoteCard = ({
   id,
   handleRefresh,
 }) => {
-  useEffect(() => {
-    console.log("this is card id ", id);
-    console.log("thi sis card content", content);
-  }, []);
+  useEffect(() => {}, []);
   const deleteNote = async (noteId) => {
-    console.log("this is note id ", noteId);
     if (noteId) {
       await asyncNote.deleteNote(parseInt(noteId));
       handleRefresh();

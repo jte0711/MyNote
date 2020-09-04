@@ -36,7 +36,7 @@ const deleteNote = async (id) => {
     }
   }
 
-  asyncStorage.storeData(notes);
+  await asyncStorage.storeData(notes);
 };
 
 const editNote = async (note, id) => {
@@ -63,8 +63,7 @@ const editNote = async (note, id) => {
       break;
     }
   }
-  console.log("this is edited note ", notes);
-  asyncStorage.storeData(notes);
+  await asyncStorage.storeData(notes);
 };
 
 export default {

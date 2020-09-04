@@ -28,14 +28,12 @@ const HomeScreen = ({ navigation }) => {
     setRefresh(true);
     console.log("refresh");
     getNotesApi.request();
-    console.log("this is the mounting api ", getNotesApi.data);
     setRefresh(false);
   };
 
   useEffect(() => {
     refreshHandler();
     const onFocusRefresh = navigation.addListener("focus", () => {
-      console.log("called");
       refreshHandler();
     });
 
@@ -64,8 +62,12 @@ const HomeScreen = ({ navigation }) => {
               name="sort"
               color="black"
               size={30}
+              style={{ display: "none" }}
             />
-            <TouchableOpacity onPress={() => setSearch(true)}>
+            <TouchableOpacity
+              style={{ display: "none" }}
+              onPress={() => setSearch(true)}
+            >
               <MaterialIcons
                 style={styles.icon}
                 name="search"
@@ -77,8 +79,10 @@ const HomeScreen = ({ navigation }) => {
             <TouchableOpacity
               onPress={() => {
                 asyncStorage.clearData();
+                console.log(" ---------- CLEAR DATA ----------");
                 refreshHandler();
               }}
+              style={{ display: "none" }}
             >
               <MaterialIcons
                 style={styles.icon}
@@ -109,7 +113,7 @@ const HomeScreen = ({ navigation }) => {
             data={getNotesApi.data}
             keyExtractor={(item) => {
               // console.log("this is flatlist item ", item);
-              return item.id;
+              return item.id.toString();
             }}
             onRefresh={refreshHandler}
             refreshing={refresh}

@@ -10,7 +10,6 @@ const useAsyncStore = (asyncFunc) => {
     const response = await asyncFunc(...args);
     setLoading(false);
 
-    console.log("useasync response", response);
     setData(response ? response.data : null);
   };
 

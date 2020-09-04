@@ -17,17 +17,16 @@ const NoteScreen = ({ navigation, route }) => {
   const titleInputRef = useRef();
   const textInputRef = useRef();
 
-  const deleteNote = () => {
+  const deleteNote = async () => {
     let id = details ? details.id : null;
     if (id) {
-      console.log("this is the id ", id);
-      asyncNote.deleteNote(parseInt(id));
+      await asyncNote.deleteNote(parseInt(id));
       navigation.navigate("Home");
     } else {
       navigation.goBack();
     }
   };
-  const saveIconHandler = () => {
+  const saveIconHandler = async () => {
     setEdit(false);
     let data = {
       title: title,
@@ -38,10 +37,10 @@ const NoteScreen = ({ navigation, route }) => {
     textInputRef.current.blur();
     if (details) {
       // edit current note
-      asyncNote.editNote(data, details.id);
+      await asyncNote.editNote(data, details.id);
     } else {
       // add a new note
-      asyncNote.addNote(data);
+      await asyncNote.addNote(data);
     }
   };
   const trashIconHandler = () => {
@@ -104,7 +103,9 @@ const NoteScreen = ({ navigation, route }) => {
         style={[styles.titleInput, { height: titleHeight }]}
         value={details ? details.title : null}
       />
-      <Text style={styles.date}>Last edited 25 November 2019</Text>
+      <Text style={[{ display: "none" }, styles.date]}>
+        Last edited 25 November 2019
+      </Text>
       <Input
         multiline
         onChangeText={(text) => {
