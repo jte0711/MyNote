@@ -35,19 +35,19 @@ const LoginScreen = ({ navigation }) => {
         <View style={styles.buttonView}>
           <AppButton
             title="LOGIN"
-            onPress={() => console.log("Login pressed")}
+            // onPress={() => console.log("Login pressed")}
           />
           <AppButton
             color="#4885ED"
             iconName="google"
             title="Sign in with Google"
-            onPress={() => console.log("Google Login pressed")}
+            // onPress={() => console.log("Google Login pressed")}
           />
           <AppButton
             color="#3B5998"
             iconName="facebook"
             title="Sign in with Facebook"
-            onPress={() => console.log("Facebook Login pressed")}
+            // onPress={() => console.log("Facebook Login pressed")}
           />
         </View>
       </View>

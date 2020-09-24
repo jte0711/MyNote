@@ -14,3 +14,4 @@ web-build/
 assets/
 config/
 screenshots/
+__test__/

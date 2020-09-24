@@ -1,13 +1,13 @@
 {
   "expo": {
     "name": "Minote",
-    "slug": "minote",
+    "slug": "expo.io/@jmstdy95/minote",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/foregroundImage.png",
-      "resizeMode": "cover",
+      "resizeMode": "contain",
       "backgroundColor": "#0AC2B7"
     },
     "android": {
@@ -15,14 +15,14 @@
         "foregroundImage": "./assets/foregroundImage.png",
         "backgroundImage": "./assets/backgroundImage.png"
       },
-      "icon": "./assets/icon.png"
+      "icon": "./assets/icon.png",
+      "package": "jmstdy95.mynote",
+      "versionCode": 1
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },

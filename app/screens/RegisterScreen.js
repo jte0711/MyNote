@@ -47,7 +47,7 @@ export default function RegisterScreen({ navigation }) {
         <View style={styles.buttonView}>
           <AppButton
             title="REGISTER"
-            onPress={() => console.log("Register pressed")}
+            // onPress={() => console.log("Register pressed")}
           />
         </View>
       </View>
