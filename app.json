@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Minote",
-    "slug": "expo.io/@jmstdy95/minote",
+    "slug": "minote",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
