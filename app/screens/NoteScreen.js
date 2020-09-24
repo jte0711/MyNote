@@ -1,10 +1,11 @@
 import React, { useState, useRef } from "react";
-import { StyleSheet, Text, View, Alert } from "react-native";
+import { StyleSheet, Text, View, Alert, Button } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Screen from "../components/Screen";
 import Input from "../components/Input";
-import apiClient from "../api/note";
+// import apiClient from "../api/note";
 import asyncNote from "../api/asyncNote";
+import colors from "../config/colors";
 
 const NoteScreen = ({ navigation, route }) => {
   const details = route ? route.params : null;
@@ -28,6 +29,7 @@ const NoteScreen = ({ navigation, route }) => {
   };
   const saveIconHandler = async () => {
     setEdit(false);
+    let response;
     let data = {
       title: title,
       content: content,
@@ -37,10 +39,16 @@ const NoteScreen = ({ navigation, route }) => {
     textInputRef.current.blur();
     if (details) {
       // edit current note
-      await asyncNote.editNote(data, details.id);
+      response = await asyncNote.editNote(data, details.id);
     } else {
       // add a new note
-      await asyncNote.addNote(data);
+      response = await asyncNote.addNote(data);
+    }
+
+    if (response.status != "ok") {
+      Alert.alert("Memory full, please delete a few notes to save this", null, [
+        { text: "OK" },
+      ]);
     }
   };
   const trashIconHandler = () => {
@@ -54,9 +62,7 @@ const NoteScreen = ({ navigation, route }) => {
       },
       {
         text: "Cancel",
-        onPress: () => {
-          console.log("cancel pressed");
-        },
+        onPress: () => {},
       },
     ]);
   };
@@ -122,6 +128,22 @@ const NoteScreen = ({ navigation, route }) => {
         style={[styles.content, { height: contentHeight }]}
         value={details ? details.content : null}
       />
+      {/* <View style={{ marginTop: 50 }}>
+        <Button
+          title="Add list"
+          color={colors.primary}
+          onPress={() => {
+            console.log("pressed");
+          }}
+        />
+        <Button
+          title="add image"
+          color={colors.primary}
+          onPress={() => {
+            console.log("add image pressed");
+          }}
+        />
+      </View> */}
     </Screen>
   );
 };

@@ -9,11 +9,13 @@ const AddButton = ({
   iconColor = colors.white,
   iconSize = 24,
   onPress = null,
+  ...otherProps
 }) => {
   return (
     <TouchableOpacity
       style={[styles.button, { backgroundColor: color }]}
       onPress={onPress}
+      {...otherProps}
     >
       <Ionicons
         style={styles.icon}

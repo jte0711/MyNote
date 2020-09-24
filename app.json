@@ -1,14 +1,21 @@
 {
   "expo": {
-    "name": "AndroidMyNote",
-    "slug": "AndroidMyNote",
+    "name": "Minote",
+    "slug": "minote",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "image": "./assets/foregroundImage.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#0AC2B7"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/foregroundImage.png",
+        "backgroundImage": "./assets/backgroundImage.png"
+      },
+      "icon": "./assets/icon.png"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -21,6 +28,7 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "description": "A simple note-taking app. All notes will be saved in phone memory (AsyncStorage) and currently, user can only type title and text in the note. More options will come in the future."
   }
 }

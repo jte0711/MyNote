@@ -8,15 +8,12 @@ import {
   FlatList,
   Alert,
 } from "react-native";
-import { RectButton } from "react-native-gesture-handler";
 
 import Label from "./Label";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Swipeable from "react-native-gesture-handler/Swipeable";
-import apiClient from "../api/note";
+// import apiClient from "../api/note";
 import asyncNote from "../api/asyncNote";
-
-const AnimatedIcon = Animated.createAnimatedComponent(MaterialCommunityIcons);
 
 const NoteCard = ({
   title,
@@ -32,7 +29,7 @@ const NoteCard = ({
       await asyncNote.deleteNote(parseInt(noteId));
       handleRefresh();
     } else {
-      console.log("error triggered");
+      // console.log("error triggered");
     }
   };
   const trashIconHandler = (noteId) => {
@@ -46,9 +43,7 @@ const NoteCard = ({
       },
       {
         text: "Cancel",
-        onPress: () => {
-          console.log("cancel pressed");
-        },
+        onPress: () => {},
       },
     ]);
   };
@@ -64,20 +59,21 @@ const NoteCard = ({
             //   extrapolate: "clamp",
             // });
             return (
-              <View style={styles.rightAction}>
-                <MaterialCommunityIcons
-                  color={"#FBFEFE"}
-                  style={[styles.icon]}
-                  name="trash-can"
-                  size={30}
-                  onPress={() => trashIconHandler(id)}
-                />
-              </View>
+              <TouchableWithoutFeedback onPress={() => trashIconHandler(id)}>
+                <View style={styles.rightAction}>
+                  <MaterialCommunityIcons
+                    color={"#FBFEFE"}
+                    style={[styles.icon]}
+                    name="trash-can"
+                    size={30}
+                  />
+                </View>
+              </TouchableWithoutFeedback>
             );
           }}
         >
           <View style={[styles.innerCard]}>
-            <Text style={styles.title} numberOfLines={2}>
+            <Text testID="cardTitle" style={styles.title} numberOfLines={2}>
               {title}
             </Text>
             <Text style={styles.description} numberOfLines={2}>
@@ -107,7 +103,7 @@ const styles = StyleSheet.create({
     color: "#072120",
     fontFamily: "Roboto",
     fontStyle: "normal",
-    fontWeight: "300",
+    fontWeight: "400",
     fontSize: 14,
     lineHeight: 13,
     marginBottom: 10,
@@ -126,16 +122,16 @@ const styles = StyleSheet.create({
   card: {
     borderRadius: 15,
     backgroundColor: "#FBFEFE",
-    elevation: 3,
+    elevation: 1,
     marginVertical: 15,
     overflow: "hidden",
-    shadowColor: "rgba(7, 33, 32, 0.3)",
-    shadowRadius: 2.5,
-    shadowOpacity: 0.5,
-    shadowOffset: {
-      height: 3,
-      width: 0,
-    },
+    // shadowColor: "rgba(7, 33, 32, 0.3)",
+    // shadowRadius: 2.5,
+    // shadowOpacity: 0.5,
+    // shadowOffset: {
+    //   height: 3,
+    //   width: 0,
+    // },
   },
   rightAction: {
     width: "30%",
@@ -151,7 +147,7 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto",
     fontSize: 20,
     fontStyle: "normal",
-    fontWeight: "normal",
+    fontWeight: "600",
     lineHeight: 23,
     marginBottom: 10,
   },

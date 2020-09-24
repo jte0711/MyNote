@@ -17,7 +17,6 @@ const addNote = (note) => {
     })
   );
 
-  // console.log("This is data ", data);
   return client.post(endpoint, data);
 };
 
@@ -39,10 +38,7 @@ const editNote = (note, id) => {
       id: index + 1,
     })
   );
-  // console.log("This is data ", data);
-  // console.log("This is id ", id);
   let url = endpoint + "/" + id.toString();
-  // console.log("this is url ", url);
   return client.put(url, data);
 };
 

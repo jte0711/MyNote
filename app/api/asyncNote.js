@@ -23,7 +23,7 @@ const addNote = async (note) => {
     data.id = 1;
   }
   notes.data.push(data);
-  await asyncStorage.storeData(notes);
+  return await asyncStorage.storeData(notes);
 };
 
 const deleteNote = async (id) => {
@@ -36,7 +36,7 @@ const deleteNote = async (id) => {
     }
   }
 
-  await asyncStorage.storeData(notes);
+  return await asyncStorage.storeData(notes);
 };
 
 const editNote = async (note, id) => {
@@ -63,7 +63,7 @@ const editNote = async (note, id) => {
       break;
     }
   }
-  await asyncStorage.storeData(notes);
+  return await asyncStorage.storeData(notes);
 };
 
 export default {

@@ -9,6 +9,7 @@ import {
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 
 import Input from "../components/Input";
+import Icon from "../components/Icon";
 import Screen from "../components/Screen";
 import NoteCard from "../components/NoteCard";
 import AddButton from "../components/AddButton";
@@ -17,7 +18,7 @@ import colors from "../config/colors";
 // import apiClient from "../api/notes";
 import useAsyncStore from "../hooks/useAsync";
 import asyncNotes from "../api/asyncNotes";
-import asyncStorage from "../utility/asyncStorage";
+// import asyncStorage from "../utility/asyncStorage";
 
 const HomeScreen = ({ navigation }) => {
   const getNotesApi = useAsyncStore(asyncNotes.getAllNotes);
@@ -26,7 +27,6 @@ const HomeScreen = ({ navigation }) => {
 
   const refreshHandler = () => {
     setRefresh(true);
-    console.log("refresh");
     getNotesApi.request();
     setRefresh(false);
   };
@@ -43,20 +43,9 @@ const HomeScreen = ({ navigation }) => {
   return (
     <>
       <Screen style={styles.screen}>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
+        <View style={styles.screenView}>
           <Text style={styles.title}>Notes</Text>
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
+          <View style={styles.iconRow}>
             <MaterialIcons
               style={styles.icon}
               name="sort"
@@ -64,33 +53,23 @@ const HomeScreen = ({ navigation }) => {
               size={30}
               style={{ display: "none" }}
             />
-            <TouchableOpacity
-              style={{ display: "none" }}
+            <Icon
               onPress={() => setSearch(true)}
-            >
-              <MaterialIcons
-                style={styles.icon}
-                name="search"
-                color="black"
-                size={30}
-              />
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              onPress={() => {
-                asyncStorage.clearData();
-                console.log(" ---------- CLEAR DATA ----------");
-                refreshHandler();
-              }}
-              style={{ display: "none" }}
-            >
-              <MaterialIcons
-                style={styles.icon}
-                name="settings"
-                color="black"
-                size={30}
-              />
-            </TouchableOpacity>
+              iconStyle={styles.icon}
+              iconName="search"
+              iconColor="black"
+              iconSize={30}
+            />
+            <Icon
+              // onPress={() => {
+              //   asyncStorage.clearData();
+              //   refreshHandler();
+              // }}
+              iconStyle={styles.icon}
+              iconName="settings"
+              iconColor="black"
+              iconSize={30}
+            />
           </View>
         </View>
         {search ? (
@@ -108,11 +87,10 @@ const HomeScreen = ({ navigation }) => {
             </TouchableOpacity>
           </View>
         ) : null}
-        <View style={styles.noteList}>
+        <View testID="noteList" style={styles.noteList}>
           <FlatList
             data={getNotesApi.data}
             keyExtractor={(item) => {
-              // console.log("this is flatlist item ", item);
               return item.id.toString();
             }}
             onRefresh={refreshHandler}
@@ -125,7 +103,6 @@ const HomeScreen = ({ navigation }) => {
                 id={item.id}
                 handleRefresh={() => {
                   setRefresh(true);
-                  console.log("refresh");
                   getNotesApi.request();
                   setRefresh(false);
                 }}
@@ -142,6 +119,7 @@ const HomeScreen = ({ navigation }) => {
           iconColor={colors.white}
           iconSize={60}
           onPress={() => navigation.navigate("Note")}
+          testID="AddButton"
         />
       </Screen>
     </>
@@ -159,6 +137,10 @@ const styles = StyleSheet.create({
   icon: {
     marginLeft: 15,
   },
+  iconRow: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
   noteList: {
     marginVertical: 20,
     paddingBottom: 20,
@@ -173,8 +155,13 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   screen: {
-    marginVertical: 10,
-    marginHorizontal: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+  },
+  screenView: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   title: {
     fontFamily: "Roboto",

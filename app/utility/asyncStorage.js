@@ -16,8 +16,10 @@ const storeData = async (val) => {
   try {
     const strValue = JSON.stringify(val);
     await AsyncStorage.setItem(storageKey, strValue);
+    return { status: "ok" };
   } catch (error) {
     console.log(error);
+    return { status: "Memory full" };
   }
 };
 
