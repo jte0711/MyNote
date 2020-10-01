@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Minote",
-    "slug": "minote",
+    "name": "MyNote",
+    "slug": "mynote",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -23,7 +23,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },

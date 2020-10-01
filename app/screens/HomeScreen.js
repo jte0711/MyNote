@@ -17,13 +17,17 @@ import colors from "../config/colors";
 // import useApi from "../hooks/useApi";
 // import apiClient from "../api/notes";
 import useAsyncStore from "../hooks/useAsync";
+import asyncNote from "../api/asyncNote";
 import asyncNotes from "../api/asyncNotes";
-// import asyncStorage from "../utility/asyncStorage";
+import asyncStorage from "../utility/asyncStorage";
+import welcomeData from "../config/firstLoad";
+import { storageKey, firstKey } from "../config/env";
 
 const HomeScreen = ({ navigation }) => {
   const getNotesApi = useAsyncStore(asyncNotes.getAllNotes);
   const [search, setSearch] = useState(false);
   const [refresh, setRefresh] = useState(false);
+  // const [firstNotes, setFirstNotes] = useState();
 
   const refreshHandler = () => {
     setRefresh(true);
@@ -31,8 +35,20 @@ const HomeScreen = ({ navigation }) => {
     setRefresh(false);
   };
 
+  const firstCheck = async () => {
+    const firstCheck = await asyncStorage.getData(firstKey);
+    if (firstCheck) {
+    } else {
+      await asyncStorage.storeData(firstKey, { NotFirstTime: true });
+      for (let i = 0; i < welcomeData.length; i++) {
+        await asyncNote.addNote(welcomeData[i]);
+      }
+      refreshHandler();
+    }
+  };
+
   useEffect(() => {
-    refreshHandler();
+    firstCheck();
     const onFocusRefresh = navigation.addListener("focus", () => {
       refreshHandler();
     });
@@ -55,16 +71,17 @@ const HomeScreen = ({ navigation }) => {
             />
             <Icon
               onPress={() => setSearch(true)}
-              iconStyle={styles.icon}
+              iconStyle={[styles.icon, { display: "none" }]}
               iconName="search"
               iconColor="black"
               iconSize={30}
             />
             <Icon
-              // onPress={() => {
-              //   asyncStorage.clearData();
-              //   refreshHandler();
-              // }}
+              onPress={async () => {
+                await asyncStorage.clearData(storageKey);
+                await asyncStorage.clearData(firstKey);
+                refreshHandler();
+              }}
               iconStyle={styles.icon}
               iconName="settings"
               iconColor="black"

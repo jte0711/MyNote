@@ -105,7 +105,8 @@ const styles = StyleSheet.create({
     fontStyle: "normal",
     fontWeight: "400",
     fontSize: 14,
-    lineHeight: 13,
+    lineHeight: 15,
+    paddingTop: 1,
     marginBottom: 10,
   },
   labels: {
@@ -123,7 +124,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     backgroundColor: "#FBFEFE",
     elevation: 1,
-    marginVertical: 15,
+    marginVertical: 10,
     overflow: "hidden",
     // shadowColor: "rgba(7, 33, 32, 0.3)",
     // shadowRadius: 2.5,
