@@ -6,7 +6,7 @@ const useAsyncStore = (asyncFunc) => {
   const [loading, setLoading] = useState(false);
 
   const request = async (...args) => {
-    console.log("Called");
+    // console.log("Called");
     setLoading(true);
     const response = await asyncFunc(...args);
     setLoading(false);
