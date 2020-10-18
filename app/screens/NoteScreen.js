@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { StyleSheet, Text, View, Alert, Button } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Screen from "../components/Screen";
@@ -6,14 +6,23 @@ import Input from "../components/Input";
 // import apiClient from "../api/note";
 import asyncNote from "../api/asyncNote";
 import colors from "../config/colors";
+import { FlatList } from "react-native-gesture-handler";
+import { contextType } from "lottie-react-native";
 
 const NoteScreen = ({ navigation, route }) => {
   const details = route ? route.params : null;
   const [titleHeight, setTitleHeight] = useState("auto");
-  const [contentHeight, setContentHeight] = useState("auto");
+  const [contentHeight, setContentHeight] = useState({ 0: "auto", 1: "auto" });
   const [edit, setEdit] = useState(false);
   const [title, setTitle] = useState(details ? details.title : "");
-  const [content, setContent] = useState(details ? details.content : "");
+  // const [content, setContent] = useState(details ? details.content : "");
+  const [autoFocus, setAutoFocus] = useState(false);
+  const [contentList, setContentList] = useState([0, 1]); // put in index number in the list
+  const [contentTexts, setContentTexts] = useState({
+    0: "testing one two three",
+    1: "testing everything",
+  }); // index: list of string value
+  const refDict = useRef([]);
 
   const titleInputRef = useRef();
   const textInputRef = useRef();
@@ -27,6 +36,10 @@ const NoteScreen = ({ navigation, route }) => {
       navigation.goBack();
     }
   };
+  // useEffect(() => {
+  //   // console.log(contentTexts);
+  // }, [contentTexts]);
+
   const saveIconHandler = async () => {
     setEdit(false);
     let response;
@@ -112,7 +125,7 @@ const NoteScreen = ({ navigation, route }) => {
       <Text style={[{ display: "none" }, styles.date]}>
         Last edited 25 November 2019
       </Text>
-      <Input
+      {/* <Input
         multiline
         onChangeText={(text) => {
           setContent(text);
@@ -127,7 +140,88 @@ const NoteScreen = ({ navigation, route }) => {
         theRef={textInputRef}
         style={[styles.content, { height: contentHeight }]}
         value={details ? details.content : null}
-      />
+      /> */}
+
+      <FlatList
+        data={contentList}
+        keyExtractor={(index) => {
+          return index.toString();
+        }}
+        renderItem={({ item, index }) => {
+          return (
+            <Input
+              autoFocus={autoFocus}
+              theRef={(element) => {
+                refDict.current[item] = element;
+              }}
+              multiline
+              onContentSizeChange={(event) => {
+                if (
+                  event &&
+                  event.nativeEvent &&
+                  event.nativeEvent.contentSize
+                ) {
+                  let temp = {};
+                  temp[item] = event.nativeEvent.contentSize.height;
+                  setContentHeight(Object.assign({}, contentHeight, temp));
+                }
+              }}
+              onFocus={inputFocusHandler}
+              onKeyPress={(e) => {
+                console.log(e.nativeEvent.key);
+                if (
+                  contentTexts[item] === "" &&
+                  e.nativeEvent.key === "Backspace"
+                ) {
+                  console.log("backspace true");
+                  // delete textinput here
+                  refDict.current[item] = null;
+
+                  let temp = contentTexts;
+                  let tempArr = contentList;
+
+                  delete temp[item];
+                  tempArr.splice(index, 1);
+
+                  setContentTexts(Object.assign({}, temp));
+                  setContentList(tempArr);
+
+                  refDict.current[contentList[index - 1]].focus();
+                }
+              }}
+              style={[
+                styles.content,
+                {
+                  height: contentHeight[item],
+                  backgroundColor: "yellow",
+                  marginVertical: 0,
+                },
+              ]}
+              onChangeText={(text) => {
+                console.log("changetext");
+                let temp = {};
+                temp[item] = text;
+                setContentTexts(Object.assign({}, contentTexts, temp));
+              }}
+              blurOnSubmit={true}
+              returnKeyType={"go"}
+              onSubmitEditing={() => {
+                let newIdx = Math.max(...contentList) + 1;
+                let temp = {};
+                temp[newIdx] = "";
+                let tempList = contentList;
+                tempList.splice(index + 1, 0, newIdx);
+
+                refDict.current[item].blur();
+                setAutoFocus(true);
+                setContentTexts(Object.assign({}, contentTexts, temp));
+                setContentList(tempList);
+              }}
+              value={contentTexts[item]}
+            />
+          );
+        }}
+      ></FlatList>
       {/* <View style={{ marginTop: 50 }}>
         <Button
           title="Add list"
