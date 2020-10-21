@@ -6,7 +6,11 @@ import Input from "../components/Input";
 // import apiClient from "../api/note";
 import asyncNote from "../api/asyncNote";
 import colors from "../config/colors";
-import { RichEditor, RichToolbar } from "react-native-pell-rich-editor";
+import {
+  actions,
+  RichEditor,
+  RichToolbar,
+} from "react-native-pell-rich-editor";
 
 const NoteScreen = ({ navigation, route }) => {
   const details = route ? route.params : null;
@@ -138,6 +142,12 @@ const NoteScreen = ({ navigation, route }) => {
       </Screen>
       {edit ? (
         <RichToolbar
+          actions={[
+            actions.setBold,
+            actions.setItalic,
+            actions.insertBulletsList,
+            actions.insertOrderedList,
+          ]}
           editor={textInputRef}
           style={{ backgroundColor: colors.light }}
         />
