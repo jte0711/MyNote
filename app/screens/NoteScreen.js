@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
-import { StyleSheet, Text, View, Alert } from "react-native";
+import { StyleSheet, Text, View, Alert, ScrollView } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Screen from "../components/Screen";
 import Input from "../components/Input";
 // import apiClient from "../api/note";
 import asyncNote from "../api/asyncNote";
 import colors from "../config/colors";
-import { RichEditor } from "react-native-pell-rich-editor";
+import { RichEditor, RichToolbar } from "react-native-pell-rich-editor";
 
 const NoteScreen = ({ navigation, route }) => {
   const details = route ? route.params : null;
@@ -79,60 +79,70 @@ const NoteScreen = ({ navigation, route }) => {
   }, []);
 
   return (
-    <Screen style={styles.screen}>
+    <>
+      <Screen style={styles.screen}>
+        {edit ? (
+          <View style={styles.topBar}>
+            <MaterialCommunityIcons
+              style={styles.icon}
+              name="trash-can"
+              size={30}
+              onPress={trashIconHandler}
+            />
+            <MaterialCommunityIcons
+              style={styles.icon}
+              name="check-circle-outline"
+              size={30}
+              onPress={saveIconHandler}
+            />
+          </View>
+        ) : null}
+        <ScrollView>
+          <Input
+            maxLength={70}
+            multiline={true}
+            numberOfLines={3}
+            onChangeText={(text) => {
+              setTitle(text);
+            }}
+            onContentSizeChange={(event) => {
+              if (event && event.nativeEvent && event.nativeEvent.contentSize) {
+                setTitleHeight(event.nativeEvent.contentSize.height);
+              }
+            }}
+            onFocus={inputFocusHandler}
+            placeholder="Type a title here"
+            theRef={titleInputRef}
+            style={[styles.titleInput, { height: titleHeight }]}
+            value={details ? details.title : null}
+          />
+          <Text style={[{ display: "none" }, styles.date]}>
+            Last edited 25 November 2019
+          </Text>
+          <RichEditor
+            editorStyle={{
+              backgroundColor: colors.light,
+              color: "#122120",
+              contentCSSText:
+                'font-family: "Roboto"; font-style: "normal"; font-weight: "normal"; font-size: 18px; line-height: 25px; letter-spacing: 0.005px',
+            }}
+            style={[styles.content]}
+            ref={textInputRef}
+            placeholder={"Type something here"}
+            onChange={(e) => {
+              setContent(e);
+            }}
+            initialContentHTML={details ? details.content : null} //if there is initial value
+          />
+        </ScrollView>
+      </Screen>
       {edit ? (
-        <View style={styles.topBar}>
-          <MaterialCommunityIcons
-            style={styles.icon}
-            name="trash-can"
-            size={30}
-            onPress={trashIconHandler}
-          />
-          <MaterialCommunityIcons
-            style={styles.icon}
-            name="check-circle-outline"
-            size={30}
-            onPress={saveIconHandler}
-          />
-        </View>
+        <RichToolbar
+          editor={textInputRef}
+          style={{ backgroundColor: colors.light }}
+        />
       ) : null}
-      <Input
-        maxLength={70}
-        multiline={true}
-        numberOfLines={3}
-        onChangeText={(text) => {
-          setTitle(text);
-        }}
-        onContentSizeChange={(event) => {
-          if (event && event.nativeEvent && event.nativeEvent.contentSize) {
-            setTitleHeight(event.nativeEvent.contentSize.height);
-          }
-        }}
-        onFocus={inputFocusHandler}
-        placeholder="Type a title here"
-        theRef={titleInputRef}
-        style={[styles.titleInput, { height: titleHeight }]}
-        value={details ? details.title : null}
-      />
-      <Text style={[{ display: "none" }, styles.date]}>
-        Last edited 25 November 2019
-      </Text>
-      <RichEditor
-        editorStyle={{
-          backgroundColor: colors.light,
-          color: "#122120",
-          contentCSSText:
-            'font-family: "Roboto"; font-style: "normal"; font-weight: "normal"; font-size: 18px; line-height: 25px; letter-spacing: 0.005px',
-        }}
-        style={[styles.content]}
-        ref={textInputRef}
-        placeholder={"Type something here"}
-        onChange={(e) => {
-          setContent(e);
-        }}
-        initialContentHTML={details ? details.content : null} //if there is initial value
-      />
-    </Screen>
+    </>
   );
 };
 
@@ -144,6 +154,7 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingHorizontal: 15,
     width: "100%",
+    flexGrow: 1,
   },
   date: {
     color: "#94B8B5",
