@@ -14,6 +14,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 // import apiClient from "../api/note";
 import asyncNote from "../api/asyncNote";
+import WebView from "react-native-webview";
 
 const NoteCard = ({
   title,
@@ -76,9 +77,10 @@ const NoteCard = ({
             <Text testID="cardTitle" style={styles.title} numberOfLines={2}>
               {title}
             </Text>
-            <Text style={styles.description} numberOfLines={2}>
+            <WebView source={{ html: content }} originWhitelist={["*"]} />
+            {/* <Text style={styles.description} numberOfLines={2}>
               {content}
-            </Text>
+            </Text> */}
             <View style={styles.labels}>
               <FlatList
                 data={labels}
