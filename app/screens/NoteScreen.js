@@ -1,19 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Alert,
-  Button,
-  ScrollView,
-} from "react-native";
+import { StyleSheet, Text, View, Alert } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Screen from "../components/Screen";
 import Input from "../components/Input";
 // import apiClient from "../api/note";
 import asyncNote from "../api/asyncNote";
 import colors from "../config/colors";
-import { contextType } from "lottie-react-native";
 import { RichEditor } from "react-native-pell-rich-editor";
 
 const NoteScreen = ({ navigation, route }) => {
