@@ -77,7 +77,12 @@ const NoteCard = ({
             <Text testID="cardTitle" style={styles.title} numberOfLines={2}>
               {title}
             </Text>
-            <WebView source={{ html: content }} originWhitelist={["*"]} />
+            <WebView
+              source={{ html: content }}
+              overScrollMode={"never"}
+              style={{ overflow: "hidden" }}
+              originWhitelist={["*"]}
+            />
             {/* <Text style={styles.description} numberOfLines={2}>
               {content}
             </Text> */}

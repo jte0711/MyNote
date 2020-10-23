@@ -1,5 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
-import { StyleSheet, Text, View, Alert, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Alert,
+  ScrollView,
+  KeyboardAvoidingView,
+  Keyboard,
+} from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Screen from "../components/Screen";
 import Input from "../components/Input";
@@ -18,9 +26,11 @@ const NoteScreen = ({ navigation, route }) => {
   const [edit, setEdit] = useState(false);
   const [title, setTitle] = useState(details ? details.title : "");
   const [content, setContent] = useState(details ? details.content : "");
+  const [keyboardState, setKeyboardState] = useState(false);
 
   const titleInputRef = useRef();
   const textInputRef = useRef();
+  const scrollRef = useRef();
 
   const deleteNote = async () => {
     let id = details ? details.id : null;
@@ -80,6 +90,21 @@ const NoteScreen = ({ navigation, route }) => {
 
   useEffect(() => {
     textInputRef.current.setContentFocusHandler(inputFocusHandler);
+    Keyboard.addListener("keyboardDidShow", () => {
+      setKeyboardState(true);
+    });
+    Keyboard.addListener("keyboardDidHide", () => {
+      setKeyboardState(false);
+    });
+
+    return () => {
+      Keyboard.removeListener("keyboardDidShow", () => {
+        setKeyboardState(true);
+      });
+      Keyboard.removeListener("keyboardDidHide", () => {
+        setKeyboardState(false);
+      });
+    };
   }, []);
 
   return (
@@ -101,7 +126,11 @@ const NoteScreen = ({ navigation, route }) => {
             />
           </View>
         ) : null}
-        <ScrollView>
+        <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          behavior={"height"}
+          keyboardVerticalOffset={100}
+        >
           <Input
             maxLength={70}
             multiline={true}
@@ -130,15 +159,22 @@ const NoteScreen = ({ navigation, route }) => {
               contentCSSText:
                 'font-family: "Roboto"; font-style: "normal"; font-weight: "normal"; font-size: 18px; line-height: 25px; letter-spacing: 0.005px',
             }}
-            style={[styles.content]}
+            style={[
+              styles.content,
+              keyboardState ? { paddingBottom: 20, maxHeight: "85%" } : null,
+            ]}
             ref={textInputRef}
             placeholder={"Type something here"}
             onChange={(e) => {
               setContent(e);
             }}
+            onHeightChange={(e) => {
+              console.log("changing height", e);
+            }}
+            overScrollMode={"true"}
             initialContentHTML={details ? details.content : null} //if there is initial value
           />
-        </ScrollView>
+        </KeyboardAvoidingView>
       </Screen>
       {edit ? (
         <RichToolbar
@@ -164,7 +200,8 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingHorizontal: 15,
     width: "100%",
-    flexGrow: 1,
+    flex: 1,
+    maxHeight: "100%",
   },
   date: {
     color: "#94B8B5",
