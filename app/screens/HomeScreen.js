@@ -14,8 +14,6 @@ import Screen from "../components/Screen";
 import NoteCard from "../components/NoteCard";
 import AddButton from "../components/AddButton";
 import colors from "../config/colors";
-// import useApi from "../hooks/useApi";
-// import apiClient from "../api/notes";
 import useAsyncStore from "../hooks/useAsync";
 import asyncNote from "../api/asyncNote";
 import asyncNotes from "../api/asyncNotes";
@@ -27,7 +25,6 @@ const HomeScreen = ({ navigation }) => {
   const getNotesApi = useAsyncStore(asyncNotes.getAllNotes);
   const [search, setSearch] = useState(false);
   const [refresh, setRefresh] = useState(false);
-  // const [firstNotes, setFirstNotes] = useState();
 
   const refreshHandler = () => {
     setRefresh(true);
