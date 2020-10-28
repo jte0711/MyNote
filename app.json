@@ -18,14 +18,12 @@
       "icon": "./assets/icon.png",
       "package": "jmstdy95.mynote",
       "permissions": [],
-      "versionCode": 2
+      "versionCode": 3
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "jmstdy95.mynote"
