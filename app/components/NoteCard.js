@@ -15,6 +15,7 @@ import Swipeable from "react-native-gesture-handler/Swipeable";
 // import apiClient from "../api/note";
 import asyncNote from "../api/asyncNote";
 import WebView from "react-native-webview";
+import colors from "../config/colors";
 
 const NoteCard = ({
   title,
@@ -80,7 +81,9 @@ const NoteCard = ({
             <WebView
               source={{ html: content }}
               overScrollMode={"never"}
-              style={{ overflow: "hidden" }}
+              showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}
+              style={{ overflow: "hidden", backgroundColor: "#FBFEFE" }}
               originWhitelist={["*"]}
             />
             {/* <Text style={styles.description} numberOfLines={2}>

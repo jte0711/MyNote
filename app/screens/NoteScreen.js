@@ -19,6 +19,11 @@ import {
   RichEditor,
   RichToolbar,
 } from "react-native-pell-rich-editor";
+// import {
+//   actions,
+//   RichEditor,
+//   RichToolbar,
+// } from "../components/react-native-rich-editor/src/index";
 
 const NoteScreen = ({ navigation, route }) => {
   const details = route ? route.params : null;
@@ -27,6 +32,7 @@ const NoteScreen = ({ navigation, route }) => {
   const [title, setTitle] = useState(details ? details.title : "");
   const [content, setContent] = useState(details ? details.content : "");
   const [keyboardState, setKeyboardState] = useState(false);
+  const [editorHeight, setEditorHeight] = useState();
 
   const titleInputRef = useRef();
   const textInputRef = useRef();
@@ -129,51 +135,54 @@ const NoteScreen = ({ navigation, route }) => {
         <KeyboardAvoidingView
           style={{ flex: 1 }}
           behavior={"height"}
-          keyboardVerticalOffset={100}
+          keyboardVerticalOffset={150}
         >
-          <Input
-            maxLength={70}
-            multiline={true}
-            numberOfLines={3}
-            onChangeText={(text) => {
-              setTitle(text);
-            }}
-            onContentSizeChange={(event) => {
-              if (event && event.nativeEvent && event.nativeEvent.contentSize) {
-                setTitleHeight(event.nativeEvent.contentSize.height);
-              }
-            }}
-            onFocus={inputFocusHandler}
-            placeholder="Type a title here"
-            theRef={titleInputRef}
-            style={[styles.titleInput, { height: titleHeight }]}
-            value={details ? details.title : null}
-          />
-          <Text style={[{ display: "none" }, styles.date]}>
-            Last edited 25 November 2019
-          </Text>
-          <RichEditor
-            editorStyle={{
-              backgroundColor: colors.light,
-              color: "#122120",
-              contentCSSText:
-                'font-family: "Roboto"; font-style: "normal"; font-weight: "normal"; font-size: 18px; line-height: 25px; letter-spacing: 0.005px',
-            }}
-            style={[
-              styles.content,
-              keyboardState ? { paddingBottom: 20, maxHeight: "85%" } : null,
-            ]}
-            ref={textInputRef}
-            placeholder={"Type something here"}
-            onChange={(e) => {
-              setContent(e);
-            }}
-            onHeightChange={(e) => {
-              console.log("changing height", e);
-            }}
-            overScrollMode={"true"}
-            initialContentHTML={details ? details.content : null} //if there is initial value
-          />
+          <ScrollView>
+            <Input
+              maxLength={70}
+              multiline={true}
+              numberOfLines={3}
+              onChangeText={(text) => {
+                setTitle(text);
+              }}
+              onContentSizeChange={(event) => {
+                if (
+                  event &&
+                  event.nativeEvent &&
+                  event.nativeEvent.contentSize
+                ) {
+                  setTitleHeight(event.nativeEvent.contentSize.height);
+                }
+              }}
+              onFocus={inputFocusHandler}
+              placeholder="Type a title here"
+              theRef={titleInputRef}
+              style={[styles.titleInput, { height: titleHeight }]}
+              value={details ? details.title : null}
+            />
+            <Text style={[{ display: "none" }, styles.date]}>
+              Last edited 25 November 2019
+            </Text>
+            <RichEditor
+              editorStyle={{
+                backgroundColor: colors.light,
+                color: "#122120",
+                contentCSSText:
+                  'font-family: "Roboto"; font-style: "normal"; font-weight: "normal"; font-size: 18px; line-height: 25px; letter-spacing: 0.005px',
+              }}
+              style={[styles.content]}
+              ref={textInputRef}
+              placeholder={"Type something here"}
+              onChange={(e) => {
+                setContent(e);
+              }}
+              // overScrollMode={"always"}                keyboardState ? { paddingBottom: 100 } : null,
+
+              // scrollEnabled={true}
+              initialContentHTML={details ? details.content : null} //if there is initial value
+            />
+            {keyboardState ? <View style={{ height: 150 }} /> : null}
+          </ScrollView>
         </KeyboardAvoidingView>
       </Screen>
       {edit ? (
