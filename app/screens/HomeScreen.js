@@ -79,7 +79,7 @@ const HomeScreen = ({ navigation }) => {
                 await asyncStorage.clearData(firstKey);
                 refreshHandler();
               }}
-              iconStyle={styles.icon}
+              iconStyle={(styles.icon, { display: "none" })}
               iconName="settings"
               iconColor="black"
               iconSize={30}
@@ -183,5 +183,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 36,
     lineHeight: 42,
+    color: "black",
   },
 });

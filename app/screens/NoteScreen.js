@@ -32,7 +32,6 @@ const NoteScreen = ({ navigation, route }) => {
   const [title, setTitle] = useState(details ? details.title : "");
   const [content, setContent] = useState(details ? details.content : "");
   const [keyboardState, setKeyboardState] = useState(false);
-  const [editorHeight, setEditorHeight] = useState();
 
   const titleInputRef = useRef();
   const textInputRef = useRef();
@@ -224,6 +223,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     paddingLeft: 20,
+    color: "black",
   },
   screen: {
     padding: 5,
