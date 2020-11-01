@@ -51,6 +51,8 @@ project.xcworkspace
 #
 build/
 release/
+.png
+.hprof
 .idea
 .gradle
 local.properties
