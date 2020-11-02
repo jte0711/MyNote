@@ -7,6 +7,10 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Keyboard,
+  Modal,
+  TextInput,
+  Button,
+  TouchableOpacity,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Screen from "../components/Screen";
@@ -32,10 +36,17 @@ const NoteScreen = ({ navigation, route }) => {
   const [title, setTitle] = useState(details ? details.title : "");
   const [content, setContent] = useState(details ? details.content : "");
   const [keyboardState, setKeyboardState] = useState(false);
+  const [linkPrompt, setLinkPrompt] = useState(false);
+  const [linkTitle, setLinkTitle] = useState("");
+  const [linkURL, setLinkURL] = useState("");
 
   const titleInputRef = useRef();
   const textInputRef = useRef();
   const scrollRef = useRef();
+
+  const handleInsertLink = () => {
+    setLinkPrompt(true);
+  };
 
   const deleteNote = async () => {
     let id = details ? details.id : null;
@@ -114,6 +125,55 @@ const NoteScreen = ({ navigation, route }) => {
 
   return (
     <>
+      <Modal
+        animationType={"none"}
+        transparent={true}
+        style={{ justifyContent: "center", alignItems: "center" }}
+        visible={linkPrompt}
+      >
+        <View style={styles.linkPromptWrapper}>
+          <View style={styles.linkPrompt}>
+            <View style={{ paddingBottom: 25 }}>
+              <Text>Please write the title below</Text>
+              <TextInput
+                onChangeText={(text) => setLinkTitle(text)}
+                style={styles.linkPromptTextInput}
+              ></TextInput>
+              <Text>Please write the URL below</Text>
+              <TextInput
+                onChangeText={(text) => setLinkURL(text)}
+                style={styles.linkPromptTextInput}
+              ></TextInput>
+            </View>
+            <View style={styles.linkPromptButtonView}>
+              <View style={styles.linkPromptButtonWrapper}>
+                <TouchableOpacity
+                  style={styles.linkPromptButton}
+                  onPress={() => {
+                    textInputRef.current.insertLink(linkTitle, linkURL);
+                    setLinkTitle("");
+                    setLinkURL("");
+                    setLinkPrompt(false);
+                  }}
+                >
+                  <Text>OK</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.linkPromptButtonWrapper}>
+                <TouchableOpacity
+                  style={styles.linkPromptButton}
+                  onPress={() => {
+                    // textInputRef.insertLink()
+                    setLinkPrompt(false);
+                  }}
+                >
+                  <Text>Cancel</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </View>
+      </Modal>
       <Screen style={styles.screen}>
         {edit ? (
           <View style={styles.topBar}>
@@ -175,9 +235,6 @@ const NoteScreen = ({ navigation, route }) => {
               onChange={(e) => {
                 setContent(e);
               }}
-              // overScrollMode={"always"}                keyboardState ? { paddingBottom: 100 } : null,
-
-              // scrollEnabled={true}
               initialContentHTML={details ? details.content : null} //if there is initial value
             />
             {keyboardState ? <View style={{ height: 150 }} /> : null}
@@ -191,7 +248,9 @@ const NoteScreen = ({ navigation, route }) => {
             actions.setItalic,
             actions.insertBulletsList,
             actions.insertOrderedList,
+            actions.insertLink,
           ]}
+          onInsertLink={handleInsertLink}
           editor={textInputRef}
           style={{ backgroundColor: colors.light }}
         />
@@ -224,6 +283,39 @@ const styles = StyleSheet.create({
   icon: {
     paddingLeft: 20,
     color: "black",
+  },
+  linkPrompt: {
+    backgroundColor: "white",
+    width: "80%",
+    height: 200,
+    borderRadius: 25,
+    padding: 15,
+  },
+  linkPromptButton: {
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: colors.primary,
+    width: 100,
+    height: 50,
+    borderRadius: 20,
+  },
+  linkPromptButtonView: {
+    flexDirection: "row",
+    width: "100%",
+  },
+  linkPromptButtonWrapper: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  linkPromptTextInput: {
+    backgroundColor: "rgba(0,0,0,0.04)",
+  },
+  linkPromptWrapper: {
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100%",
   },
   screen: {
     padding: 5,
